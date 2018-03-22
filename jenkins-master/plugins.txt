@@ -1,0 +1,6 @@
+jclouds-jenkins
+token-macro
+durable-task
+docker-plugin
+docker-java-api
+config-file-provider 
