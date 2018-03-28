@@ -28,9 +28,11 @@ RUN useradd jenkins -m -s /bin/bash
 
 # Add public key for Jenkins login
 RUN mkdir /home/jenkins/.ssh
+
 COPY files/authorized_keys /home/jenkins/.ssh/authorized_keys
 RUN chown -R jenkins /home/jenkins
 RUN chgrp -R jenkins /home/jenkins
+
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
 RUN chmod 700 /home/jenkins/.ssh
 

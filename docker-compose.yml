@@ -16,4 +16,4 @@ nginx:
     - master:jenkins-master
 
 slave:
-  build: jenkins-slave
+  build: jenkins-slave-terraform
