@@ -29,17 +29,18 @@ RUN useradd jenkins -m -s /bin/bash
 
 # Add public key for Jenkins login
 RUN mkdir /home/jenkins/.ssh
-RUN mkdir /home/jenkins/.aws
+#RUN mkdir /home/jenkins/.aws
 RUN mkdir /home/jenkins/terraform
 
 COPY files/authorized_keys /home/jenkins/.ssh/authorized_keys
-COPY files/credentials  /home/jenkins/.aws/credentials
+#COPY ~/.aws/credentials  /home/jenkins/.aws/credentials
 COPY files/terraform_linux_amd64.zip /home/jenkins/terraform.zip
 RUN chown -R jenkins /home/jenkins
 RUN chgrp -R jenkins /home/jenkins
 
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
-RUN chmod 500 /home/jenkins/.aws/credentials
+#RUN chmod 500 /home/jenkins/.aws/credentials
+# Bad practices to pass aws credentials when build the image
 RUN chmod 700 /home/jenkins/.ssh
 
 # Add the jenkins user to sudoers
