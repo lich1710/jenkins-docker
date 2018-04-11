@@ -10,6 +10,17 @@ RUN mkdir /var/log/jenkins
 RUN mkdir /var/cache/jenkins
 RUN chown -R  jenkins:jenkins /var/log/jenkins
 RUN chown -R jenkins:jenkins /var/cache/jenkins
+
+RUN apt-get update \
+    && apt-get install -y apt-transport-https ca-certificates wget software-properties-common
+RUN wget https://download.docker.com/linux/debian/gpg
+RUN apt-key add gpg
+RUN echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | tee -a /etc/apt/sources.list.d/docker.list
+RUN apt-get update \
+    && apt-cache policy docker-ce \
+    && apt-get -y install docker-ce \
+    && rm -rf /var/lib/apt/lists/*
+
 USER jenkins
 
 

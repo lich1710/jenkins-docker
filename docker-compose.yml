@@ -1,3 +1,10 @@
+slave:
+  build: jenkins-slave-terraform
+  volumes:
+    - /Users/w00f/.aws:/home/jenkins/.aws
+  links:
+    - graphite:graphite
+
 master:
   # Build is the folder where the docker file is
   build: jenkins-master
@@ -6,6 +13,9 @@ master:
   volumes:
     - var_jenkins_home:/var/jenkins_home
     - var_log_jenkins:/var/log/jenkins
+    - var_backup:/var/jenkins_backup
+  links:
+    - slave:jenkins-slave
 
 nginx:
   build: jenkins-nginx
@@ -14,6 +24,12 @@ nginx:
   links:
   #Refer to the compose name inside this file is jenkinsmaster
     - master:jenkins-master
-
-slave:
-  build: jenkins-slave-terraform
+graphite:
+  image: "graphiteapp/graphite-statsd"
+  container_name: graphite
+  ports:
+    - "8080:80"
+    - "2003-2004:2003-2004"
+    - "2023-2024:2023-2024"
+    - "8125:8125/udp"
+    - "8126:8126"
