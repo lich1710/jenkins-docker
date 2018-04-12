@@ -25,7 +25,7 @@ nginx:
   #Refer to the compose name inside this file is jenkinsmaster
     - master:jenkins-master
 graphite:
-  image: "graphiteapp/graphite-statsd"
+  build: graphite
   container_name: graphite
   ports:
     - "8080:80"

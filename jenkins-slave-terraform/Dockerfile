@@ -11,9 +11,19 @@ RUN yum update -y && \
 
 RUN curl --silent --location https://rpm.nodesource.com/setup_8.x | bash -
 
+
+
+
 RUN yum install -y git nc wget openssh-server java-1.8.0-openjdk sudo \
         unzip git nodejs && \
         yum clean all
+
+# Add EPEL repo
+RUN wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+    && yum install -y epel-release-latest-7.noarch.rpm \
+    && rm -f epel-release-latest-7.noarch.rpm
+
+RUN yum install -y collectd
 
 # gen dummy keys, centos doesn't autogen them like ubuntu does
 
@@ -46,8 +56,10 @@ RUN chgrp -R jenkins /home/jenkins
 
 #Clone StatsD and Start statsd services
 RUN git clone https://github.com/etsy/statsd.git /usr/local/src/statsd/
-#Copy statsd config file
+#Copy statsd & collectd config file
 COPY files/config.js /usr/local/src/statsd/config.js
+COPY files/collectd.conf /etc/collectd.conf
+COPY files/autorun.sh /home/jenkins/autorun.sh
 
 RUN chmod 600 /home/jenkins/.ssh/authorized_keys
 RUN chmod 700 /home/jenkins/.ssh
@@ -60,6 +72,7 @@ USER jenkins
 ENV PATH=/home/jenkins/terraform:$PATH
 
 USER root
-# Expose SSH port and run SSHD
+
+# Expose SSH port and run script to start statd and collectd
 EXPOSE 22
-CMD ["sh","-c","node /usr/local/src/statsd/stats.js /usr/local/src/statsd/config.js -d"]
+CMD ["sh","-c","/home/jenkins/autorun.sh"]
