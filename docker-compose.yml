@@ -1,7 +1,8 @@
 slave:
   build: jenkins-slave-terraform
   volumes:
-    - /Users/w00f/.aws:/home/jenkins/.aws
+  # AWS credentials folder. Export $HOME before run docker-compose
+    - $HOME/.aws:/home/jenkins/.aws
   links:
     - graphite:graphite
 
@@ -33,3 +34,12 @@ graphite:
     - "2023-2024:2023-2024"
     - "8125:8125/udp"
     - "8126:8126"
+grafana:
+  image: "grafana/grafana"
+  container_name: grafana
+  ports:
+    - "3000:3000"
+  links:
+    - graphite:graphite
+  volumes:
+    - grafana-storage:/var/lib/grafana
