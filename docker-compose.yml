@@ -34,6 +34,8 @@ graphite:
     - "2023-2024:2023-2024"
     - "8125:8125/udp"
     - "8126:8126"
+  volumes:
+    - graphite-date:/opt/graphite
 grafana:
   image: "grafana/grafana"
   container_name: grafana
