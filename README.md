@@ -1,11 +1,11 @@
 # JENKINS ENVIRONMENT WITH GRAPHITE & GRAFANA MONITORING USING DOCKER 
 
 
-## PURPOSE
+## I. PURPOSE
 
 Purpose of the environment is to have a Jenkins environment with a slave running on Docker. For illustration purpose, we have the slave to be built specifically for the purpose of running Terraform infrastructure script. At the same time, the load of the slave server will be reported back to Graphite and displayed using Grafana. You can further tweak the environment to build Jenkins pipeline for different purpose. 
 
-## DESIGN
+## II. DESIGN
 
 This example has 5 components, all running on Docker Container and can be launch at the same time using Docker-Compose: 
 
@@ -15,9 +15,9 @@ This example has 5 components, all running on Docker Container and can be launch
 - Graphite Server - Using Graphite-StatsD docker image which can be found here: https://github.com/graphite-project/docker-graphite-statsd. Loaded with predefined Storages-Schema to recognize CollectD metrics
 - Grafana Server - Using official Grafana docker image
 
-## INSTRUCTION ON LAUNCHING THE ENVIRONMENT
+## III. INSTRUCTION ON LAUNCHING THE ENVIRONMENT
 
-### PREREQUISITES
+### 1. PREREQUISITES
 
 The whole environment can be launch simply by running the docker-compose.yml script. Let's look at the requirement to launch this environment successfully:
 
@@ -97,7 +97,7 @@ Graphite Web Interface can be access via port 8080 and Grafana can be access via
 
 
 
-### LAUNCHING THE ENVIRONMENT
+### 2. LAUNCHING THE ENVIRONMENT
 
 From top folder, run:
 
@@ -105,7 +105,7 @@ From top folder, run:
 docker-compose up -d
 ```
 
-#### You can skip all the below process by using my Jenkins home folder and Grafana from below sources:
+#### a. You can skip some steps b and c by using my Jenkins home folder and Grafana from below sources:
 
 Download my /var/jenkins_home folder: https://1drv.ms/u/s!AmQg3nnClm2t70KYQdhR-4OK8z8r
 
@@ -113,9 +113,10 @@ Copy the content over the folder /var/jenkins_home in Jenkins Master Server or o
 
 Download my /var/lib/grafana folder: https://1drv.ms/u/s!AmQg3nnClm2t70NLZqu1nkHvo51d
 
-Copy the content over the folder /var/lib/grafana in Grafana Server or on host Volume
+Copy the content over the folder /var/lib/grafana in Grafana Server or on host Volume. 
 
-#### SETUP JENKINS MASTER 
+
+#### b. SETUP JENKINS MASTER 
 
 To authenticate Jenkins master with Jenkins slave, we need to add the private key to use to login to slave:
 
@@ -138,7 +139,7 @@ Review the Terraform plan at the stage Plan, if you are okay with the Plan, you 
 
 ![alt text](sample-images/Screen%20Shot%202018-04-15%20at%2011.41.48%20PM.png)
 
-### SETUP GRAPHITE AND GRAFANA
+#### c. SETUP GRAPHITE AND GRAFANA
 
 GRAPHITE has been preconfigured to received statsd and collectd metric. You can see the metrics either in Graphite Web or Grafana.
 Go to Grafana Web, login using admin/admin credentials. Since Grafana container already linked to Graphite as defined as hostname graphite, you can configure the Grafana data source from Graphite as below:
@@ -150,7 +151,7 @@ Build some simple dashboard to display the metrics from Graphite:
 ![alt text](sample-images/Screen%20Shot%202018-04-15%20at%2011.40.33%20PM.png)
 
 
-## CONCLUSION
+## IV. CONCLUSION
 
 With this setup, we have successfully built a simple Jenkins environment with a master and a slave. The slave Dockerfile was specifically targeted to run Terraform build, with further tweak, it can run other kind of code base. The slave CPU and Memory load was constantly monitored by Graphite and Grafana. 
 
