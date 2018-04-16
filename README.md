@@ -108,9 +108,11 @@ docker-compose up -d
 #### You can skipp all the below process by using my Jenkins home folder and Grafana from below sources:
 
 Download my /var/jenkins_home folder: https://1drv.ms/u/s!AmQg3nnClm2t70KYQdhR-4OK8z8r
+
 Copy the content over the folder /var/jenkins_home in Jenkins Master Server or on host Volume
 
 Download my /var/lib/grafana folder: https://1drv.ms/u/s!AmQg3nnClm2t70NLZqu1nkHvo51d
+
 Copy the content over the folder /var/lib/grafana in Grafana Server or on host Volume
 
 #### SETUP JENKINS MASTER 
@@ -148,3 +150,10 @@ Build some simple dashboard to display the metrics from Graphite:
 ![alt text](sample-images/Screen%20Shot%202018-04-15%20at%2011.40.33%20PM.png)
 
 
+## CONCLUSTION
+
+With this setup, we have successfully built a simple Jenkins environment with a master and a slave. The slave Dockerfile was specifically targeted to run Terraform build, with further tweak, it can run other kind of code base. The slave CPU and Memory load was constantly monitored by Graphite and Grafana. 
+
+Using my Jenkins master setting and correct Docker host setting, you can even launch a ephemeral container everytime a build is triggered, and the container is auto destroyed after the build successful. 
+
+In the futures, I will add function to track successful & failed build from Jenkins and report those metric back to be displayed on Grafana.
